@@ -1,9 +1,9 @@
 from typing import Optional, Union
-from ..base.base_widget import BaseWidget
-from ..base.signal_system import Signal
-from ..base.validation_helpers import ValidationHelpers
 
 import mset
+from base.base_widget import BaseWidget
+from base.signal_system import Signal
+from base.validation_helpers import ValidationHelpers
 
 
 class LabeledSlider(BaseWidget):
@@ -17,31 +17,23 @@ class LabeledSlider(BaseWidget):
         self.__slider_type = slider_type
         self.mset_label: Optional[object] = None
         self.mset_slider: Optional[object] = None
+        self.valueChanged = Signal()
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         self.mset_label = mset.UILabel(self.label_text)
         parent_window.addElement(self.mset_label)
         parent_window.addReturn()
 
         if self.__slider_type == "int":
-            self.mset_slider = mset.UISliderInt(min=int(self.__min_value), max=int(self.__max_value))
+            self.mset_slider = mset.UISliderInt(min=int(self.__min_value), max=int(self.__max_value), name="")
         else:
-            self.mset_slider = mset.UISliderFloat(min=float(self.__min_value), max=float(self.__max_value))
+            self.mset_slider = mset.UISliderFloat(min=float(self.__min_value), max=float(self.__max_value), name="")
 
         self.mset_slider.value = self.__default_value
-        self.mset_slider.onChange = self.__on_slider_change
         parent_window.addElement(self.mset_slider)
         parent_window.addReturn()
 
         self.mset_elements.extend([self.mset_label, self.mset_slider])
-
-    def __init_signals(self):
-        super().__init_signals()
-        self.valueChanged = Signal()
-
-    def __on_slider_change(self):
-        if self.mset_slider and hasattr(self.mset_slider, 'value'):
-            self.valueChanged.emit(self.mset_slider.value)
 
     @property
     def label_text(self) -> str:

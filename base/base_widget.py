@@ -1,6 +1,6 @@
 from typing import Any, List
 import mset
-from .signal_system import Signal, SignalMixin
+from base.signal_system import Signal, SignalMixin
 
 
 class BaseWidget(SignalMixin):
@@ -11,7 +11,7 @@ class BaseWidget(SignalMixin):
         self.__visible = visible
         self.mset_elements: List[Any] = []
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         pass
 
     def __destroy_mset_elements(self):
@@ -37,7 +37,7 @@ class BaseWidget(SignalMixin):
 
     def add_to_window(self, parent_window):
         if parent_window:
-            self.__create_mset_elements(parent_window)
+            self._create_mset_elements(parent_window)
 
     def destroy(self):
         self.destroyed.emit()

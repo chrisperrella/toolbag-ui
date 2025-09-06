@@ -29,15 +29,12 @@ class WidgetShowcase:
         basic_group = ParameterGroup("Basic Widgets", expanded=True)
         
         gravity_slider = LabeledSlider("Gravity", 0.0, 20.0, 9.81)
-        gravity_slider.valueChanged.connect(self.__on_gravity_changed)
         basic_group.add_parameter(gravity_slider)
         
         count_slider = LabeledSlider("Count", 1, 100, 50, "int")
-        count_slider.valueChanged.connect(self.__on_count_changed)
         basic_group.add_parameter(count_slider)
         
         seed_input = SeedInput()
-        seed_input.valueChanged.connect(self.__on_seed_changed)
         basic_group.add_parameter(seed_input)
         
         basic_group.add_to_window(self.main_window)
@@ -46,15 +43,12 @@ class WidgetShowcase:
         input_group = ParameterGroup("Input Widgets")
         
         name_input = LineEdit("Enter name...", "Name placeholder")
-        name_input.textChanged.connect(self.__on_name_changed)
         input_group.add_parameter(name_input)
         
         feature_toggle = CheckBox("Enable advanced features", False)
-        feature_toggle.stateChanged.connect(self.__on_feature_toggled)
         input_group.add_parameter(feature_toggle)
         
         surface_combo = ComboBox(["Mesh Surface", "Procedural Plane", "Procedural Sphere", "Procedural Box"], 0, "Surface Type:")
-        surface_combo.currentTextChanged.connect(self.__on_surface_changed)
         input_group.add_parameter(surface_combo)
         
         input_group.add_to_window(self.main_window)
@@ -67,7 +61,6 @@ class WidgetShowcase:
         axis_group.add_parameter(align_buttons)
         
         position_input = Vector3Input("Position", -10.0, 10.0, [0.0, 0.0, 0.0])
-        position_input.valueChanged.connect(self.__on_position_changed)
         axis_group.add_parameter(position_input)
         
         axis_group.add_to_window(self.main_window)
@@ -91,7 +84,7 @@ class WidgetShowcase:
         action_button.add_to_window(self.main_window)
         self.widgets.append(action_button)
         
-        self.status_display = StatusDisplay("Status:", "Showcase ready")
+        self.status_display = StatusDisplay("Status:", "UI Widget Showcase")
         self.status_display.add_to_window(self.main_window)
         self.widgets.append(self.status_display)
 
@@ -128,39 +121,9 @@ class WidgetShowcase:
         if self.status_display:
             self.status_display.set_status(f"Align to {axis_names[axis_index]} axis clicked")
 
-    def __on_count_changed(self, value):
-        if self.status_display:
-            self.status_display.set_status(f"Count changed to: {value}")
-
-    def __on_feature_toggled(self, checked):
-        if self.status_display:
-            state = "enabled" if checked else "disabled"
-            self.status_display.set_status(f"Advanced features {state}")
-
-    def __on_gravity_changed(self, value):
-        if self.status_display:
-            self.status_display.set_status(f"Gravity changed to: {value:.2f}")
-
     def __on_layout_click(self, button_name):
         if self.status_display:
             self.status_display.set_status(f"Layout demo clicked: {button_name}")
-
-    def __on_name_changed(self, text):
-        if self.status_display:
-            self.status_display.set_status(f"Name changed to: '{text}'")
-
-    def __on_position_changed(self, value):
-        if self.status_display:
-            self.status_display.set_status(f"Position: [{value[0]:.1f}, {value[1]:.1f}, {value[2]:.1f}]")
-
-    def __on_seed_changed(self, value):
-        if self.status_display:
-            seed_text = str(value) if value is not None else "random"
-            self.status_display.set_status(f"Seed changed to: {seed_text}")
-
-    def __on_surface_changed(self, surface_type):
-        if self.status_display:
-            self.status_display.set_status(f"Surface type changed to: {surface_type}")
 
     def __on_test_action(self):
         if self.status_display:

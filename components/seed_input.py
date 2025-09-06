@@ -1,9 +1,9 @@
 import random
 from typing import Optional
-from ..base.base_widget import BaseWidget
-from ..base.signal_system import Signal
 
 import mset
+from base.base_widget import BaseWidget
+from base.signal_system import Signal
 
 
 class SeedInput(BaseWidget):
@@ -15,8 +15,9 @@ class SeedInput(BaseWidget):
         self.mset_field: Optional[object] = None
         self.mset_help_label: Optional[object] = None
         self.mset_label: Optional[object] = None
+        self.valueChanged = Signal()
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         self.mset_label = mset.UILabel(self.label_text)
         parent_window.addElement(self.mset_label)
         parent_window.addReturn()
@@ -28,7 +29,6 @@ class SeedInput(BaseWidget):
 
         self.mset_field = mset.UITextFieldInt()
         self.mset_field.value = 0
-        self.mset_field.onChange = self.__on_field_change
         parent_window.addElement(self.mset_field)
 
         self.mset_button = mset.UIButton("Random")
@@ -40,13 +40,6 @@ class SeedInput(BaseWidget):
         if self.mset_help_label:
             elements.append(self.mset_help_label)
         self.mset_elements.extend(elements)
-
-    def __init_signals(self):
-        super().__init_signals()
-        self.valueChanged = Signal()
-
-    def __on_field_change(self):
-        self.valueChanged.emit(self.get_value())
 
     def __on_random_click(self):
         self.set_random_seed()

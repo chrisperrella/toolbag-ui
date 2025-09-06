@@ -1,8 +1,8 @@
 from typing import Optional
-from ..base.base_widget import BaseWidget
-from ..base.signal_system import Signal
 
 import mset
+from base.base_widget import BaseWidget
+from base.signal_system import Signal
 
 
 class CheckBox(BaseWidget):
@@ -11,26 +11,25 @@ class CheckBox(BaseWidget):
         self.__checked = checked
         self.__text = text
         self.mset_checkbox: Optional[object] = None
-
-    def __create_mset_elements(self, parent_window):
-        self.mset_checkbox = mset.UICheckBox()
-        self.mset_checkbox.text = self.__text
-        self.mset_checkbox.checked = self.__checked
-        self.mset_checkbox.onChange = self.__on_state_changed
-
-        parent_window.addElement(self.mset_checkbox)
-        parent_window.addReturn()
-
-        self.mset_elements.append(self.mset_checkbox)
-
-    def __init_signals(self):
-        super().__init_signals()
+        self.mset_label: Optional[object] = None
         self.stateChanged = Signal()
 
-    def __on_state_changed(self):
-        if self.mset_checkbox and hasattr(self.mset_checkbox, 'checked'):
-            self.__checked = self.mset_checkbox.checked
-            self.stateChanged.emit(self.__checked)
+    def _create_mset_elements(self, parent_window):
+        self.mset_checkbox = mset.UICheckBox()
+        
+        if self.__text:
+            self.mset_label = mset.UILabel(self.__text)
+            parent_window.addElement(self.mset_checkbox)
+            parent_window.addElement(self.mset_label)
+        else:
+            parent_window.addElement(self.mset_checkbox)
+            
+        parent_window.addReturn()
+
+        elements = [self.mset_checkbox]
+        if self.mset_label:
+            elements.append(self.mset_label)
+        self.mset_elements.extend(elements)
 
     @property
     def checked(self) -> bool:
@@ -39,8 +38,6 @@ class CheckBox(BaseWidget):
     @checked.setter
     def checked(self, value: bool):
         self.__checked = value
-        if self.mset_checkbox and hasattr(self.mset_checkbox, 'checked'):
-            self.mset_checkbox.checked = value
 
     def get_value(self) -> bool:
         return self.checked
@@ -55,5 +52,5 @@ class CheckBox(BaseWidget):
     @text.setter
     def text(self, value: str):
         self.__text = value
-        if self.mset_checkbox and hasattr(self.mset_checkbox, 'text'):
-            self.mset_checkbox.text = value
+        if self.mset_label and hasattr(self.mset_label, 'text'):
+            self.mset_label.text = value

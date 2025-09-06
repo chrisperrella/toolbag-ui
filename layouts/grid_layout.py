@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional, Tuple
-from ..base.container_widget import ContainerWidget
 
 import mset
+from base.container_widget import ContainerWidget
 
 
 class GridLayout(ContainerWidget):
@@ -11,7 +11,7 @@ class GridLayout(ContainerWidget):
         self.__max_column = -1
         self.__max_row = -1
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         sorted_positions = sorted(self.__grid_items.keys())
         
         current_row = -1

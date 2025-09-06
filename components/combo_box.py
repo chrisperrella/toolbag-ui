@@ -1,8 +1,8 @@
 from typing import List, Optional
-from ..base.base_widget import BaseWidget
-from ..base.signal_system import Signal
 
 import mset
+from base.base_widget import BaseWidget
+from base.signal_system import Signal
 
 
 class ComboBox(BaseWidget):
@@ -12,36 +12,19 @@ class ComboBox(BaseWidget):
         self.__items = items or []
         self.__label_text = label_text
         self.mset_combo: Optional[object] = None
+        self.currentIndexChanged = Signal()
+        self.currentTextChanged = Signal()
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         self.mset_combo = mset.UIListBox(self.__label_text)
         
         for item in self.__items:
             self.mset_combo.addItem(item)
-            
-        if self.__items and 0 <= self.__current_index < len(self.__items):
-            self.mset_combo.selectedIndex = self.__current_index
-            
-        self.mset_combo.onChange = self.__on_selection_changed
 
         parent_window.addElement(self.mset_combo)
         parent_window.addReturn()
 
         self.mset_elements.append(self.mset_combo)
-
-    def __init_signals(self):
-        super().__init_signals()
-        self.currentIndexChanged = Signal()
-        self.currentTextChanged = Signal()
-
-    def __on_selection_changed(self):
-        if self.mset_combo and hasattr(self.mset_combo, 'selectedIndex'):
-            old_index = self.__current_index
-            self.__current_index = self.mset_combo.selectedIndex
-            if old_index != self.__current_index:
-                self.currentIndexChanged.emit(self.__current_index)
-                if 0 <= self.__current_index < len(self.__items):
-                    self.currentTextChanged.emit(self.__items[self.__current_index])
 
     def add_item(self, text: str):
         self.__items.append(text)
@@ -51,9 +34,6 @@ class ComboBox(BaseWidget):
     def clear(self):
         self.__items.clear()
         self.__current_index = 0
-        if self.mset_combo:
-            while self.mset_combo.itemCount > 0:
-                self.mset_combo.removeItem(0)
 
     @property
     def count(self) -> int:
@@ -67,8 +47,6 @@ class ComboBox(BaseWidget):
     def current_index(self, value: int):
         if 0 <= value < len(self.__items):
             self.__current_index = value
-            if self.mset_combo and hasattr(self.mset_combo, 'selectedIndex'):
-                self.mset_combo.selectedIndex = value
 
     @property
     def current_text(self) -> str:

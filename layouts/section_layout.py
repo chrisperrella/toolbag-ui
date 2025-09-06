@@ -1,6 +1,5 @@
-from ..base.container_widget import ContainerWidget
-
 import mset
+from base.container_widget import ContainerWidget
 
 
 class SectionLayout(ContainerWidget):
@@ -8,7 +7,7 @@ class SectionLayout(ContainerWidget):
         super().__init__(**kwargs)
         self.spacing = spacing
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         for i, widget in enumerate(self.child_widgets):
             widget.add_to_window(parent_window)
             

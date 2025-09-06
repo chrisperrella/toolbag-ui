@@ -1,7 +1,7 @@
 from typing import Optional
-from ..base.base_widget import BaseWidget
 
 import mset
+from base.base_widget import BaseWidget
 
 
 class StatusDisplay(BaseWidget):
@@ -12,7 +12,7 @@ class StatusDisplay(BaseWidget):
         self.mset_label: Optional[object] = None
         self.mset_status_label: Optional[object] = None
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         if self.label_text:
             self.mset_label = mset.UILabel(self.label_text)
             parent_window.addElement(self.mset_label)

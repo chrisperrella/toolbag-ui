@@ -1,7 +1,7 @@
 from typing import Callable, Dict, Optional
-from ..base.base_widget import BaseWidget
 
 import mset
+from base.base_widget import BaseWidget
 
 
 class AxisButtonGroup(BaseWidget):
@@ -12,7 +12,7 @@ class AxisButtonGroup(BaseWidget):
         self.mset_buttons: Dict[str, object] = {}
         self.mset_label: Optional[object] = None
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         self.mset_label = mset.UILabel(self.__label_text)
         parent_window.addElement(self.mset_label)
         parent_window.addReturn()

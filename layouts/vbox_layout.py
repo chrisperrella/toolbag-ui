@@ -1,7 +1,7 @@
 from typing import List
-from ..base.container_widget import ContainerWidget
 
 import mset
+from base.container_widget import ContainerWidget
 
 
 class VBoxLayout(ContainerWidget):
@@ -10,7 +10,7 @@ class VBoxLayout(ContainerWidget):
         self.__spacing = spacing
         self.__widgets: List[object] = []
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         for i, widget in enumerate(self.__widgets):
             widget.add_to_window(parent_window)
             

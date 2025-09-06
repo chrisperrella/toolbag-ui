@@ -1,5 +1,5 @@
 from typing import List
-from .base_widget import BaseWidget
+from base.base_widget import BaseWidget
 
 
 class ContainerWidget(BaseWidget):

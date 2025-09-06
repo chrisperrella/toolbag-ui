@@ -1,9 +1,9 @@
 from typing import Dict, List, Union
-from ..base.container_widget import ContainerWidget
-from ..base.signal_system import Signal
-from .labeled_slider import LabeledSlider
 
 import mset
+from base.container_widget import ContainerWidget
+from base.signal_system import Signal
+from components.labeled_slider import LabeledSlider
 
 
 class Vector3Input(ContainerWidget):
@@ -24,8 +24,9 @@ class Vector3Input(ContainerWidget):
         self.mset_label = None
         self.slider_type = slider_type
         self.slider_widgets: Dict[str, LabeledSlider] = {}
+        self.valueChanged = Signal()
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         if self.label_text:
             self.mset_label = mset.UILabel(self.label_text)
             parent_window.addElement(self.mset_label)
@@ -46,10 +47,6 @@ class Vector3Input(ContainerWidget):
 
         if self.mset_label:
             self.mset_elements.append(self.mset_label)
-
-    def __init_signals(self):
-        super().__init_signals()
-        self.valueChanged = Signal()
 
     def __on_component_change(self, axis_index: int, value: Union[int, float]):
         self.valueChanged.emit(self.get_value())

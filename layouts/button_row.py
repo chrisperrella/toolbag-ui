@@ -1,8 +1,8 @@
 from typing import List
-from ..base.container_widget import ContainerWidget
-from ..components.action_button import ActionButton
 
 import mset
+from base.container_widget import ContainerWidget
+from components.action_button import ActionButton
 
 
 class ButtonRow(ContainerWidget):
@@ -12,7 +12,7 @@ class ButtonRow(ContainerWidget):
         self.label_text = label_text
         self.mset_label = None
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         if self.label_text:
             self.mset_label = mset.UILabel(self.label_text)
             parent_window.addElement(self.mset_label)

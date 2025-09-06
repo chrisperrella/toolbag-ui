@@ -1,8 +1,8 @@
 from typing import Optional
-from ..base.base_widget import BaseWidget
-from ..base.signal_system import Signal
 
 import mset
+from base.base_widget import BaseWidget
+from base.signal_system import Signal
 
 
 class LineEdit(BaseWidget):
@@ -11,27 +11,16 @@ class LineEdit(BaseWidget):
         self.__placeholder_text = placeholder_text
         self.__text = text
         self.mset_field: Optional[object] = None
+        self.textChanged = Signal()
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         self.mset_field = mset.UITextField()
-        self.mset_field.text = self.__text
-        self.mset_field.onChange = self.__on_text_changed
+        self.mset_field.value = self.__text
 
         parent_window.addElement(self.mset_field)
         parent_window.addReturn()
 
         self.mset_elements.append(self.mset_field)
-
-    def __init_signals(self):
-        super().__init_signals()
-        self.textChanged = Signal()
-
-    def __on_text_changed(self):
-        if self.mset_field and hasattr(self.mset_field, 'text'):
-            old_text = self.__text
-            self.__text = self.mset_field.text
-            if old_text != self.__text:
-                self.textChanged.emit(self.__text)
 
     def clear(self):
         self.text = ""
@@ -61,5 +50,5 @@ class LineEdit(BaseWidget):
     @text.setter
     def text(self, value: str):
         self.__text = value
-        if self.mset_field and hasattr(self.mset_field, 'text'):
-            self.mset_field.text = value
+        if self.mset_field and hasattr(self.mset_field, 'value'):
+            self.mset_field.value = value

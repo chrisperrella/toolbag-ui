@@ -1,7 +1,7 @@
 from typing import Optional
-from ..base.container_widget import ContainerWidget
 
 import mset
+from base.container_widget import ContainerWidget
 
 
 class ParameterGroup(ContainerWidget):
@@ -12,7 +12,7 @@ class ParameterGroup(ContainerWidget):
         self.mset_drawer: Optional[object] = None
         self.mset_window: Optional[object] = None
 
-    def __create_mset_elements(self, parent_window):
+    def _create_mset_elements(self, parent_window):
         self.mset_drawer = mset.UIDrawer(name=self.__title)
         self.mset_window = mset.UIWindow(name="")
         self.mset_drawer.containedControl = self.mset_window
